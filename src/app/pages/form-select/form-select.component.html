@@ -1,0 +1,34 @@
+<div class="form-container">
+    <h1>Formulaire de Sélection</h1>
+    <form [formGroup]="form">
+      <div>
+        <label for="region">Région</label>
+        <select id="region" formControlName="region" (change)="onRegionChange($event)">
+          <option *ngFor="let region of (regions$ | async)" [value]="region.code">
+            {{ region.nom }}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="form.get('region')?.value">
+        <label for="departement">Département</label>
+        <select id="departement" formControlName="departement" (change)="onDepartementChange($event)">
+          @for (departement of (departements$ | async); track $index) {
+            <option [value]="departement.code">
+              {{departement.nom}}
+            </option>
+          }
+        </select>
+      </div>
+      <div *ngIf="form.get('departement')?.value">
+        <label for="commune">Commune</label>
+        <select id="commune" formControlName="commune">
+          @for (commune of communes$ | async; track $index) {
+            <option [value]="commune.code">
+              {{commune.nom}}
+            </option>
+          }
+        </select>
+      </div>
+    </form>
+  </div>
+  

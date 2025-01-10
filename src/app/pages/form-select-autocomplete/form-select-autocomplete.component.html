@@ -1,0 +1,32 @@
+<div class="form-container">
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Région</mat-label>
+      <input matInput [formControl]="regionControl" [matAutocomplete]="autoRegion" />
+      <mat-autocomplete #autoRegion="matAutocomplete">
+        <mat-option *ngFor="let region of regions$ | async" [value]="region.code">
+          {{ region.nom }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  
+    <mat-form-field class="full-width" appearance="outline" *ngIf="regionControl.value">
+      <mat-label>Département</mat-label>
+      <input matInput [formControl]="departementControl" [matAutocomplete]="autoDepartement" />
+      <mat-autocomplete #autoDepartement="matAutocomplete">
+        <mat-option *ngFor="let departement of departements$ | async" [value]="departement.code">
+          {{ departement.nom }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  
+    <mat-form-field class="full-width" appearance="outline" *ngIf="departementControl.value">
+      <mat-label>Commune</mat-label>
+      <input matInput [formControl]="communeControl" [matAutocomplete]="autoCommune" />
+      <mat-autocomplete #autoCommune="matAutocomplete">
+        <mat-option *ngFor="let commune of communes$ | async" [value]="commune.code">
+          {{ commune.nom }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  

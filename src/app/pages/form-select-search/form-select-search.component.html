@@ -1,0 +1,44 @@
+<div class="form-container">
+    <!-- Region Selection -->
+    <div>
+      <input
+        type="text"
+        placeholder="Rechercher une région"
+        (input)="onSearch($event, 'region')"
+      />
+      <select (change)="onRegionSelect($event)">
+        <option *ngFor="let region of filteredRegions()" [value]="region.code">
+          {{ region.nom }}
+        </option>
+      </select>
+    </div>
+  
+    <!-- Departement Selection -->
+    <div *ngIf="selectedRegion()">
+      <input
+        type="text"
+        placeholder="Rechercher un département"
+        (input)="onSearch($event, 'departement')"
+      />
+      <select (change)="onDepartementSelect($event)">
+        <option *ngFor="let departement of filteredDepartements()" [value]="departement.code">
+          {{ departement.nom }}
+        </option>
+      </select>
+    </div>
+  
+    <!-- Commune Selection -->
+    <div *ngIf="selectedDepartement()">
+      <input
+        type="text"
+        placeholder="Rechercher une commune"
+        (input)="onSearch($event, 'commune')"
+      />
+      <select>
+        <option *ngFor="let commune of filteredCommunes()" [value]="commune.code">
+          {{ commune.nom }}
+        </option>
+      </select>
+    </div>
+  </div>
+  
