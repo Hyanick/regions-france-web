@@ -12,7 +12,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class UserListComponent implements OnInit {
   private readonly userService = inject(UserService);
   users = toSignal(this.userService.getUsers());
-  profilPicture: any;
+  pictureProfileUser = toSignal
+  profilPicture!: string
 
 ngOnInit(): void {
  
@@ -22,11 +23,7 @@ ngOnInit(): void {
 getProfilePicture(userId: number) {
   console.log('icicicicci');
   
-  this.userService.getProfilePicture(userId).subscribe((res) => {
-    console.log('res --->', res);
-    
-    this.profilPicture = res;
-  });
+
 }
 
 }

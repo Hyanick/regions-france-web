@@ -1,0 +1,148 @@
+<div class="form-container">
+  <h1>Créer un profil utilisateur</h1>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <!-- Prénom -->
+    <mat-form-field appearance="fill">
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="firstName" required />
+    </mat-form-field>
+
+    <!-- Nom -->
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="lastName" required />
+    </mat-form-field>
+
+    <!-- Genre -->
+    <mat-form-field appearance="fill">
+      <mat-label>Genre</mat-label>
+      <mat-select formControlName="gender" required>
+        <mat-option value="male">Homme</mat-option>
+        <mat-option value="female">Femme</mat-option>
+        <mat-option value="other">Autre</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Date de naissance -->
+    <mat-form-field appearance="fill">
+      <mat-label>Date de naissance</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="dateOfBirth"
+        required
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Lieu de naissance -->
+    <mat-form-field appearance="fill">
+      <mat-label>Lieu de naissance</mat-label>
+      <input matInput formControlName="placeOfBirth" />
+    </mat-form-field>
+
+    <div class="form-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Région</mat-label>
+        <mat-select
+          formControlName="region"
+          (selectionChange)="onRegionChange($event.value)"
+        >
+          <mat-option *ngFor="let region of regions$ | async" [value]="region.nom">
+            {{ region.nom }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Département</mat-label>
+        <mat-select
+          formControlName="departement"
+          (selectionChange)="onDepartementChange($event.value)"
+        >
+          <mat-option
+            *ngFor="let departement of departements$ | async"
+            [value]="departement.nom"
+          >
+            {{ departement.nom }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Commune</mat-label>
+        <mat-select formControlName="commune">
+          <mat-option
+            *ngFor="let commune of communes$ | async"
+            [value]="commune.nom"
+          >
+            {{ commune.nom }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Adresse -->
+    <mat-form-field appearance="fill">
+      <mat-label>Adresse complète</mat-label>
+      <input matInput formControlName="address" />
+    </mat-form-field>
+
+    <!-- Code postal -->
+    <mat-form-field appearance="fill">
+      <mat-label>Code postal</mat-label>
+      <input matInput formControlName="postalCode" />
+    </mat-form-field>
+
+    <!-- Pays -->
+    <mat-form-field appearance="fill">
+      <mat-label>Pays</mat-label>
+      <input matInput formControlName="country" />
+    </mat-form-field>
+
+    <!-- Photo de profil -->
+    <div class="form-group">
+      <label for="profilePicture">Photo de profil</label>
+      <input
+        type="file"
+        id="profilePicture"
+        (change)="onFileSelected($event)"
+        #fileInput
+        hidden
+        accept="image/*"
+      />
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="fileInput.click()"
+      >
+        Ajouter une photo de profil
+      </button>
+      <span *ngIf="selectedFile" class="file-name">{{
+        selectedFile.name
+      }}</span>
+
+      <div class="image-preview" *ngIf="previewUrl">
+        <img [src]="previewUrl" alt="Aperçu de la photo" />
+      </div>
+    </div>
+
+    <!-- Statut actif -->
+    <mat-checkbox formControlName="isActive">Utilisateur actif</mat-checkbox>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="userForm.invalid"
+    >
+      Créer le profil
+    </button>
+  </form>
+</div>
