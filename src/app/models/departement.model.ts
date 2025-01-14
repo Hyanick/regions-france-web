@@ -1,6 +1,6 @@
 export interface Departement {
   id?: number;
-  code?: string;
+  code: string;
   nom?: string;
   codeRegion?: string;
 }

@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 import { Departement } from '../../../models/departement.model';
 import { Commune } from '../../../models/commune.model';
 import { UserService } from '../../../services/user.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-user-profile-form',
@@ -116,17 +116,39 @@ export class UserProfileFormComponent {
   //   this.userForm.get('commune')?.reset();
   // }
 
-  onRegionChange(regionCode: string) {
-    this.selectedRegion.set(regionCode);
-    // Charger les départements liés
-    this.departementProvider.loadDepartements(regionCode);
-    this.departements$ = this.departementProvider.getDepartements();
+  onRegionChange(regionName: string) {
+    // Mettre à jour les champs de région
+    this.regions$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((regions) => {
+        const region = regions.find((r) => r.nom === regionName);
+        console.log('region', region);
+        
+        if (region) {
+          this.selectedRegion.set(region.code);
+          console.log('region.code', region.code);
+          
+          // Charger les départements liés
+          this.departementProvider.loadDepartements(region.code);
+          this.departements$ = this.departementProvider.getDepartements();
+        }
+      });
   }
 
-  onDepartementChange(departementCode: string) {
-    // Charger les communes liées
-    this.communeProvider.loadCommunes(departementCode);
-    this.communes$ = this.communeProvider.getCommunes();
+  onDepartementChange(departementName: string) {
+    this.departements$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((departements) => {
+        const departement = departements.find((d) => d.nom === departementName);
+        if (departement) {
+          // Charger les communes liées
+          this.communeProvider.loadCommunes(departement.code);
+          this.communes$ = this.communeProvider.getCommunes();
+          // this.userForm.get('departement')!.setValue(departement.code);
+        }
+      });
+
+    // Mettre à jour les champs de département
   }
 
   onFileSelected(event: Event): void {
@@ -144,7 +166,7 @@ export class UserProfileFormComponent {
   }
 
   // Soumission du formulaire
-/*
+  /*
   onSubmit() {
     if (this.userForm.valid) {
       const formData = new FormData();
@@ -173,17 +195,17 @@ export class UserProfileFormComponent {
       });
     }
   }*/
- 
+
   onSubmit(): void {
     if (this.userForm.invalid) {
       alert('Veuillez remplir tous les champs obligatoires.');
       return;
     }
-  
+
     const formData = new FormData();
     const formValue = this.userForm.value;
     console.log('Form Value:', formValue);
-  
+
     // Ajoutez les champs textuels
     for (const key in formValue) {
       if (formValue[key] !== null && formValue[key] !== undefined) {
@@ -194,22 +216,26 @@ export class UserProfileFormComponent {
         }
       }
     }
-  
+
     // Ajoutez le fichier sélectionné
     if (this.selectedFile) {
-      formData.append('profilePicture', this.selectedFile, this.selectedFile.name);
+      formData.append(
+        'profilePicture',
+        this.selectedFile,
+        this.selectedFile.name
+      );
     } else {
       console.warn('No profile picture selected.');
     }
-  
+
     // Debug : Vérifiez les données dans FormData
     formData.forEach((value, key) => {
       console.log(`FormData Key: ${key}, Value: ${value}`);
     });
-  
+
     // Appel au service
     console.log('formData send', Array.from(formData.entries()));
-    
+
     this.userService.addUser(formData).subscribe({
       next: (response) => {
         alert('Utilisateur créé avec succès !');
@@ -221,26 +247,4 @@ export class UserProfileFormComponent {
       },
     });
   }
-  
-
-  /* onSubmit(): void {
-    if (this.userForm.valid) {
-      const formData = new FormData();
-      Object.entries(this.userForm.value).forEach(([key, value]) => {
-        formData.append(key, value as string);
-      });
-
-      if (this.selectedFile) {
-        formData.append(
-          'profilePicture',
-          this.selectedFile,
-          this.selectedFile.name
-        );
-      }
-
-      console.log('Form data submitted:', formData);
-      // Envoyer `formData` au backend via un service
-      this.userSerice.addUser(formData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe()
-    }
-  }*/
 }
