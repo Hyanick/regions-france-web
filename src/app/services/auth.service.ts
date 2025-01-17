@@ -55,6 +55,6 @@ export class AuthService {
   
     // Get current user token
     public get token(): string | null {
-      return this.currentUserSubject.value?.token || null;
+      return this.currentUserSubject.value?.accessToken || null;
     }
 }
