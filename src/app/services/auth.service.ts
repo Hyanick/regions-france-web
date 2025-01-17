@@ -34,7 +34,7 @@ export class AuthService {
           // Store the user and JWT token in local storage
           console.log('response', response);
           if (response && response.accessToken) {
-            localStorage.setItem('currentUser', JSON.stringify(response));
+            sessionStorage.setItem('currentUser', JSON.stringify(response));
             this.currentUserSubject.next(response);
           }
           return response;
@@ -44,7 +44,7 @@ export class AuthService {
 
   // Logout method
   logout(): void {
-    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }
 
