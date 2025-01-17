@@ -11,13 +11,14 @@ import { routes } from './app.routes';
 import { CommuneState } from './store/states/commune.state';
 import { DepartementState } from './store/states/departement.state';
 import { RegionState } from './store/states/region.state';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideServiceWorker } from '@angular/service-worker';
 import { environment } from '../environments/environment.development';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule, StorageOption } from '@ngxs/storage-plugin';
+import { authInterceptor } from './interceptors/auth.interceptor';
 
 const LOCAL_STORAGE: 'localStorage' = 'localStorage';
 export function migrate(state: any) {
@@ -29,7 +30,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideStore([CommuneState, RegionState, DepartementState]),
     provideAnimationsAsync(),
     provideServiceWorker('ngsw-worker.js', {

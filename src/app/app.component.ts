@@ -8,7 +8,7 @@ import { UserProfileFormComponent } from './pages/user/user-profile-form/user-pr
 
 @Component({
   selector: 'app-root',
-  imports: [FormSelectComponent, FormSelectSearchComponent, FormSelectAutocompleteComponent, UserListComponent, UserProfileFormComponent],
+  imports: [FormSelectComponent, FormSelectSearchComponent, FormSelectAutocompleteComponent, UserListComponent, UserProfileFormComponent, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
