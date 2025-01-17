@@ -43,7 +43,7 @@ export class LoginComponent {
       console.log('Login with:', { email, password });
       // TODO: Add login API integration
       this.authService.login(email, password).subscribe({
-        next: () => this.router.navigate(['/user-list']),
+        next: () => this.router.navigate(['/profile']),
         error: (err) => console.error(err),
       });
     }

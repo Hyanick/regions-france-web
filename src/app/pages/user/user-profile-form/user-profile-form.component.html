@@ -1,5 +1,5 @@
 <div class="form-container">
-  <h1>Créer un profil utilisateur</h1>
+  <h1>Modifier votre profil utilisateur</h1>
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <!-- Prénom -->
     <mat-form-field appearance="fill">
@@ -49,7 +49,10 @@
           formControlName="region"
           (selectionChange)="onRegionChange($event.value)"
         >
-          <mat-option *ngFor="let region of regions$ | async" [value]="region.nom">
+          <mat-option
+            *ngFor="let region of regions$ | async"
+            [value]="region.nom"
+          >
             {{ region.nom }}
           </mat-option>
         </mat-select>
@@ -142,7 +145,15 @@
       type="submit"
       [disabled]="userForm.invalid"
     >
-      Créer le profil
+      Ediiter
+    </button>
+    <button
+      mat-raised-button
+      color="secondary"
+      type="button"
+      [routerLink] = "['/profile']"
+    >
+      Annuler
     </button>
   </form>
 </div>

@@ -22,6 +22,8 @@ import { Departement } from '../../../models/departement.model';
 import { Commune } from '../../../models/commune.model';
 import { UserService } from '../../../services/user.service';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-user-profile-form',
@@ -35,6 +37,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
     MatNativeDateModule,
     MatCheckboxModule,
     ReactiveFormsModule,
+    RouterLink,
   ],
   templateUrl: './user-profile-form.component.html',
   styleUrl: './user-profile-form.component.scss',
@@ -46,6 +49,8 @@ export class UserProfileFormComponent {
   private readonly communeProvider = inject(CommuneProvider);
   private readonly userService = inject(UserService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router)
 
   regions$!: Observable<Region[]>;
   departements$!: Observable<Departement[]>;
@@ -54,6 +59,7 @@ export class UserProfileFormComponent {
   // Selected values
   selectedRegion = signal<string | null>(null);
   selectedDepartement = signal<string | null>(null);
+  userId: string | null = null;
   /*
   // Données des régions, départements et communes (exemple)
   regions: string[] = [
@@ -123,11 +129,11 @@ export class UserProfileFormComponent {
       .subscribe((regions) => {
         const region = regions.find((r) => r.nom === regionName);
         console.log('region', region);
-        
+
         if (region) {
           this.selectedRegion.set(region.code);
           console.log('region.code', region.code);
-          
+
           // Charger les départements liés
           this.departementProvider.loadDepartements(region.code);
           this.departements$ = this.departementProvider.getDepartements();
@@ -236,7 +242,24 @@ export class UserProfileFormComponent {
     // Appel au service
     console.log('formData send', Array.from(formData.entries()));
 
-    this.userService.addUser(formData).subscribe({
+    const userId = this.authService.getUserId(); // Replace with actual logged-in user ID
+
+    this.userService.updateProfile(userId, formData).subscribe({
+      next: (res) => {
+        console.log('res Update', res);  
+        alert('Profil mis à jour avec succès!');
+
+      },
+      error: (err) => console.error(err),
+
+      complete: () => {
+        
+        this.router.navigate(['/profile'])
+      }  
+    });
+  }
+
+  /*  this.userService.addUser(formData).subscribe({
       next: (response) => {
         alert('Utilisateur créé avec succès !');
         console.log(response);
@@ -245,6 +268,5 @@ export class UserProfileFormComponent {
         alert("Erreur lors de la création de l'utilisateur.");
         console.error(error);
       },
-    });
-  }
+    });*/
 }

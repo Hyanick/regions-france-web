@@ -16,6 +16,14 @@ export class UserService {
     return this.httpClient.get<User[]>(`${this.baseUrlBackend}/users`);
   }
 
+  updateProfile(userId: number | null, data: FormData): Observable<any> {
+    return this.httpClient.patch(`${this.baseUrlBackend}/users/update-profile/${userId}`, data);
+  }
+
+  getUserProfile(): Observable<any> {
+    return this.httpClient.get(`${this.baseUrlBackend}/auth/profile`);
+  }
+
   getProfilePicture(userId: number) {
     return this.httpClient.get<any>(
       `${this.baseUrlBackend}/users/profile-picture/${userId}`

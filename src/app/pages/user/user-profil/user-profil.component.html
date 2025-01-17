@@ -1,0 +1,47 @@
+<div class="profile-container">
+    @if (user) {
+        <mat-card class="profile-card">
+            <div class="profile-header">
+              <img
+                class="profile-picture"
+                [src]="'http://localhost:3000/api/users/profile-picture/' + user.userId"
+                alt="Profile Picture"
+              />
+              <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+              <p class="email">{{ user.email }}</p>
+            </div>
+        
+            <mat-tab-group>
+              <mat-tab label="Détails">
+                <div class="tab-content">
+                  <p><strong>Genre :</strong> {{ user.gender || 'Non renseigné' }}</p>
+                  <p><strong>Date de naissance :</strong> {{ user.dateOfBirth || 'Non renseigné' }}</p>
+                  <p><strong>Adresse :</strong> {{ user.address || 'Non renseignée' }}</p>
+                  <p><strong>Commune :</strong> {{ user.commune || 'Non renseignée' }}</p>
+                  <p><strong>Département :</strong> {{ user.departement || 'Non renseigné' }}</p>
+                  <p><strong>Région :</strong> {{ user.region || 'Non renseignée' }}</p>
+                </div>
+              </mat-tab>
+        
+              <mat-tab label="Paramètres">
+                <div class="tab-content">
+                  <button mat-raised-button color="primary" (click)="onEditProfile()">
+                    Modifier le profil
+                  </button>
+                  <button mat-raised-button color="warn" (click)="onDeleteAccount()">
+                    Supprimer le compte
+                  </button>
+                </div>
+              </mat-tab>
+        
+              <mat-tab label="Historique">
+                <div class="tab-content">
+                  <p>Aucune activité récente.</p>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </mat-card>
+    }
+
+  </div>
+  

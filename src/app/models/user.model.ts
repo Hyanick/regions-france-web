@@ -2,6 +2,7 @@ export interface User {
   userId: number;
   firstName: string;
   lastName: string;
+  email: string;
   gender: 'male' | 'female' | 'other';
   dateOfBirth: string;
   placeOfBirth?: string;
@@ -9,4 +10,9 @@ export interface User {
   address?: string;
   postalCode?: string;
   country?: string;
+
+  region?: string;
+  departement?: string;
+  commune?: string;
+ 
 }

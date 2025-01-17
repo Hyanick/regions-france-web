@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { UserRegister } from '../models/user-register.model';
 import { BehaviorSubject, Observable, map } from 'rxjs';
+import * as jwtDecode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -48,13 +49,29 @@ export class AuthService {
     this.currentUserSubject.next(null);
   }
 
-    // Check if the user is logged in
-    public get isLoggedIn(): boolean {
-      return !!this.currentUserSubject.value;
-    }
-  
-    // Get current user token
-    public get token(): string | null {
-      return this.currentUserSubject.value?.accessToken || null;
-    }
+  // Check if the user is logged in
+  public get isLoggedIn(): boolean {
+    return !!this.currentUserSubject.value;
+  }
+
+  // Get current user token
+  public get token(): string | null {
+    return this.currentUserSubject.value?.accessToken || null;
+  }
+
+  getUserId(): number | null {
+    const token = this.token; // Assurez-vous que le token est stocké ici
+    console.log('token userID', token);
+    
+
+    if (!token) return null;
+
+    const decodedToken = jwtDecode.jwtDecode<
+      jwtDecode.JwtPayload & { userId: number }
+    >(token);
+
+    console.log('decodedToken', decodedToken);
+     
+    return decodedToken?.userId || null; // Supposons que 'userId' est stocké dans le token
+  }
 }
