@@ -15,9 +15,10 @@ export class AuthService {
 
   constructor() {
     this.currentUserSubject = new BehaviorSubject<any>(
-      JSON.parse(localStorage.getItem('currentUser') || 'null')
+      JSON.parse(sessionStorage.getItem('currentUser') || 'null')
     );
     this.currentUser = this.currentUserSubject.asObservable();
+   
   }
   regsiter(user: UserRegister) {
     return this.httpClient.post<UserRegister>(
@@ -55,20 +56,22 @@ export class AuthService {
   }
 
   // Get current user token
-  public get token(): string | null {
+  public get accessToken(): string | null {
     return this.currentUserSubject.value?.accessToken || null;
   }
 
+
+
   getUserId(): number | null {
-    const token = this.token; // Assurez-vous que le token est stocké ici
-    console.log('token userID', token);
+    const accessToken = this.accessToken; // Assurez-vous que le token est stocké ici
+    console.log('token userID', accessToken);
     
 
-    if (!token) return null;
+    if (!accessToken) return null;
 
     const decodedToken = jwtDecode.jwtDecode<
       jwtDecode.JwtPayload & { userId: number }
-    >(token);
+    >(accessToken);
 
     console.log('decodedToken', decodedToken);
      

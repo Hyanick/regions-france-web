@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
     "@angular/service-worker": "^19.0.0",
+    "@auth0/angular-jwt": "^5.2.0",
     "@ngxs/devtools-plugin": "^19.0.0",
     "@ngxs/logger-plugin": "^19.0.0",
     "@ngxs/storage-plugin": "^19.0.0",
