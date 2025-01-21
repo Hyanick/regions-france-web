@@ -28,6 +28,21 @@ export class AuthService {
     );
   }
 
+  verifyCode(userId: number, code: string): Observable<void> {
+    return this.httpClient.post<void>(`${this.baseUrlBackend}/auth/verify`, {
+      userId,
+      code,
+    });
+  }
+
+  // Méthode pour renvoyer le code de vérification
+  resendVerificationCode(userId: number): Observable<any> {
+    return this.httpClient.post(
+      `${this.baseUrlBackend}/auth/resend-code`, {userId}
+      
+    );
+  }
+
   // Login method
   login(email: string, password: string): Observable<any> {
     return this.httpClient
@@ -68,7 +83,7 @@ export class AuthService {
           })
         );
     } else {
-      return of()
+      return of();
     }
   }
 

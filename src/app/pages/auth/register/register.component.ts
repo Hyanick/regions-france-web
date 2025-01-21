@@ -89,7 +89,15 @@ export class RegisterComponent {
         .regsiter(this.registerForm.value)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
-          next: () => this.router.navigate(['/login']),
+          next: (response) => {
+            console.log('response', response);
+            
+            
+
+            // Rediriger vers la page de vérification avec l'ID de l'utilisateur
+            this.router.navigate(['/verify'], { queryParams: { userId: response.userId } });
+
+          },
           error(err) {
             console.log('error', err.message);
           },

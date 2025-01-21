@@ -5,11 +5,13 @@ import { UserListComponent } from './pages/user/user-list/user-list.component';
 import { authGuard } from './guards/auth.guard';
 import { UserProfilComponent } from './pages/user/user-profil/user-profil.component';
 import { UserProfileFormComponent } from './pages/user/user-profile-form/user-profile-form.component';
+import { VerifyComponent } from './pages/user/user-verify-register/user-verify-register.component';
 
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'verify', component: VerifyComponent },
   { path: 'user-list', component: UserListComponent, canActivate: [authGuard] },
   { path: 'profile', component: UserProfilComponent, canActivate: [authGuard] },
   {

@@ -1,0 +1,37 @@
+<div class="verification-container">
+    <div class="verification-box">
+      <h1>Vérification de l'adresse email</h1>
+      <p>
+        Veuillez entrer le code de vérification que nous avons envoyé à votre adresse e-mail.
+      </p>
+  
+      <form [formGroup]="verificationForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="code">Code de vérification</label>
+          <input
+            id="code"
+            type="text"
+            formControlName="code"
+            class="form-control"
+            placeholder="Entrez votre code"
+          />
+          <div *ngIf="verificationForm.get('code')?.invalid && verificationForm.get('code')?.touched" class="error-message">
+            Le code est requis.
+          </div>
+        </div>
+  
+        <button type="submit" class="btn btn-primary" [disabled]="verificationForm.invalid">
+          Vérifier
+        </button>
+        @if (errorMessage!=='') {
+            <p class="error-message"> {{errorMessage}}</p>
+        }
+        
+        <p class="resend">
+          Vous n'avez pas reçu de code ?
+          <button type="button" class="link" (click)="resendCode()">Renvoyer</button>
+        </p>
+      </form>
+    </div>
+  </div>
+  
