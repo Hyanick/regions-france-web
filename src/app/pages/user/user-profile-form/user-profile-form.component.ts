@@ -244,6 +244,9 @@ export class UserProfileFormComponent {
 
     const userId = this.authService.getUserId(); // Replace with actual logged-in user ID
 
+    console.log('userId', userId);
+    
+
     this.userService.updateProfile(userId, formData).subscribe({
       next: (res) => {
         console.log('res Update', res);  
@@ -253,7 +256,7 @@ export class UserProfileFormComponent {
       error: (err) => console.error(err),
 
       complete: () => {
-        
+
         this.router.navigate(['/profile'])
       }  
     });
