@@ -38,6 +38,7 @@ export class RegisterComponent {
   private readonly router = inject(Router);
   activationMode: 'link' | 'code' | 'phone' = 'link'; // Par défaut : mode lien
   isPageConfirmationSendedMail = false;
+  errorMessage: string = '';
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group(
@@ -121,8 +122,9 @@ export class RegisterComponent {
            // this.router.navigate(['/verify-account'], { queryParams: { token: response.token } });
 
           },
-          error(err) {
-            console.log('error', err.message);
+          error: (err) => {
+            console.error('error', err.message);
+            this.errorMessage = err.message;  // Affiche l'erreur interceptée
           },
           complete: () => console.log('User register'),
         });
