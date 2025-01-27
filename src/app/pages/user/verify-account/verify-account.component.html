@@ -1,0 +1,21 @@
+<div class="verify-account-container">
+    <div *ngIf="verificationStatus === 'pending'" class="loading">
+      <p>Vérification de votre compte en cours...</p>
+      <div class="spinner"></div>
+    </div>
+  
+    <div *ngIf="verificationStatus === 'success'" class="success">
+      <h1>Succès 🎉</h1>
+      <p>{{ message }}</p>
+      <p>Redirection vers la page de connexion...</p>
+    </div>
+  
+    <div *ngIf="verificationStatus === 'error'" class="error">
+      <h1>Échec 😞</h1>
+      <p>{{ message }}</p>
+      <!-- <button (click)="router.navigate(['/resend-activation-link'])">
+        Renvoyer un lien d’activation
+      </button> -->
+    </div>
+  </div>
+  

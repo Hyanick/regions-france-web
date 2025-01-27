@@ -43,6 +43,10 @@ export class AuthService {
     );
   }
 
+  verifyAccount(token: string): Observable<void> {
+    return this.httpClient.get<void>(`http://localhost:3000/api/auth/verify-account?token=${token}`);
+  }
+
   // Login method
   login(email: string, password: string): Observable<any> {
     return this.httpClient

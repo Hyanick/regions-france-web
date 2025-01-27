@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../../services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-register',
@@ -27,6 +28,7 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatCheckboxModule
   ],
 })
 export class RegisterComponent {
@@ -34,6 +36,8 @@ export class RegisterComponent {
   private readonly authService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
+  activationMode: 'link' | 'code' | 'phone' = 'link'; // Par défaut : mode lien
+  isPageConfirmationSendedMail = false;
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group(
@@ -44,6 +48,7 @@ export class RegisterComponent {
         confirmEmail: ['', Validators.required],
         password: ['', Validators.required],
         confirmPassword: ['', Validators.required],
+        activationMode: ['link', Validators.required], // Par défaut, via lien
       },
       {
         validators: [this.matchEmails, this.matchPasswords], // Custom validators
@@ -75,6 +80,13 @@ export class RegisterComponent {
     return null;
   }
 
+  onActivationModeChange(mode: 'link' | 'code' | 'phone', isChecked: boolean): void {
+    if (isChecked) {
+      this.activationMode = mode;
+      this.registerForm.patchValue({ activationMode: mode });
+    }
+  }
+
   onSubmit(): void {
     if (this.registerForm.valid) {
       const { firstName, lastName, email, password } = this.registerForm.value;
@@ -91,11 +103,22 @@ export class RegisterComponent {
         .subscribe({
           next: (response) => {
             console.log('response', response);
+            if(this.activationMode === 'code') {
+              this.router.navigate(['/verify'], { queryParams: { userId: response.userId } })
+            } else if(this.activationMode === 'link') {
+              {
+                  this.isPageConfirmationSendedMail = true
+              }
+
+            } else {
+
+            }
             
             
 
             // Rediriger vers la page de vérification avec l'ID de l'utilisateur
-            this.router.navigate(['/verify'], { queryParams: { userId: response.userId } });
+           // this.router.navigate(['/verify'], { queryParams: { userId: response.userId } });
+           // this.router.navigate(['/verify-account'], { queryParams: { token: response.token } });
 
           },
           error(err) {

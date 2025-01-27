@@ -6,12 +6,14 @@ import { authGuard } from './guards/auth.guard';
 import { UserProfilComponent } from './pages/user/user-profil/user-profil.component';
 import { UserProfileFormComponent } from './pages/user/user-profile-form/user-profile-form.component';
 import { VerifyComponent } from './pages/user/user-verify-register/user-verify-register.component';
+import { VerifyAccountComponent } from './pages/user/verify-account/verify-account.component';
 
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'verify', component: VerifyComponent },
+  { path: 'verify-account', component: VerifyAccountComponent },
   { path: 'user-list', component: UserListComponent, canActivate: [authGuard] },
   { path: 'profile', component: UserProfilComponent, canActivate: [authGuard] },
   {
@@ -19,5 +21,5 @@ export const routes: Routes = [
     component: UserProfileFormComponent,
     canActivate: [authGuard],
   },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
